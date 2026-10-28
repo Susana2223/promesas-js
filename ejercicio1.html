@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planetas</title>
+    <link rel="stylesheet" href="estilo.css">
+
+</head>
+
+<body>
+    <main class="caja">
+        <header class="info">Buscador de Planetas</header>
+        <form action="" id="formBuscador" autocomplete="off">
+            <div class="buscar">
+                <input type="number" id="idplaneta" placeholder="Ejem. 3" min="1" required>
+                <button type="submit">Buscar</button>
+            </div>
+            <p id="mensaje"></p>
+
+            <div class="campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre">
+            </div>
+            <div class="campo">
+                <label for="clima">Clima</label>
+                <input type="text" id="clima">
+            </div>
+            <div class="campo">
+                <label for="terreno">Terreno</label>
+                <input type="text" id="terreno">
+            </div>
+            <div class="campo">
+                <label for="poblacion">Población</label>
+                <input type="text" id="poblacion">
+            </div>
+            <div class="campo">
+                <label for="diametro">Diámetro</label>
+                <input type="text" id="diametro">
+            </div>
+        </form>
+    </main>
+
+    <script>
+        ///javascript
+        const formulario = document.getElementById('formBuscador')
+        const id = document.getElementById('idplaneta')
+        const mensaje = document.getElementById('mensaje')
+        const nombre = document.getElementById('nombre')
+        const clima = document.getElementById('clima')
+        const terreno = document.getElementById('terreno')
+        const poblacion = document.getElementById('poblacion')
+        const diametro = document.getElementById('diametro')
+
+        formulario.addEventListener('submit', (event) => {
+            event.preventDefault()
+
+            obtenerPlaneta(id.value)
+        })
+
+        function limpiar() {
+            mensaje.innerHTML = ''
+            nombre.value = ''
+            clima.value = ''
+            terreno.value = ''
+            poblacion.value = ''
+            diametro.value = ''
+        }
+        async function obtenerPlaneta(codigo) {
+            const API_URL = `https://swapi.dev/api/planets/${codigo}/`
+            limpiar()
+            try {
+                const respuesta = await fetch(API_URL)
+
+                if (!respuesta.ok) {
+
+                    if (respuesta.status == 404) {
+                        mensaje.innerHTML = 'No existe un planeta con el ID ' + codigo
+                        return
+                    }
+                    throw new Error('Error de comunicación')
+
+                }
+
+                const datos = await respuesta.json()
+
+                nombre.value = datos.name
+                clima.value = datos.climate
+                terreno.value = datos.terrain
+                poblacion.value = datos.population
+                diametro.value = datos.diameter
+
+            } catch (e) {
+                mensaje.innerHTML = 'No se pudo conectar con el servidor'
+                console.error(e)
+            }
+
+        }
+    </script>
+</body>
+
+</html>

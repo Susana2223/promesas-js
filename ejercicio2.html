@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naves Espaciales</title>
+    <link rel="stylesheet" href="estilo2.css">
+
+</head>
+
+<body>
+    <main class="caja">
+        <header class="info">Buscador de Naves Espaciales</header>
+        <form action="" id="formBuscador" autocomplete="off">
+            <div class="buscar">
+                <input type="number" id="idnave" placeholder="Ejem. 9" min="1" required>
+                <button type="submit">Buscar</button>
+            </div>
+            <p id="mensaje"></p>
+
+            <div class="campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre">
+            </div>
+            <div class="campo">
+                <label for="modelo">Modelo</label>
+                <input type="text" id="modelo">
+            </div>
+            <div class="campo">
+                <label for="fabricante">Fabricante</label>
+                <input type="text" id="fabricante">
+            </div>
+            <div class="campo">
+                <label for="clase">Clase de nave</label>
+                <input type="text" id="clase">
+            </div>
+            <div class="campo">
+                <label for="tripulacion">Tripulación</label>
+                <input type="text" id="tripulacion">
+            </div>
+        </form>
+    </main>
+
+    <script>
+        ///javascript
+        const formulario = document.getElementById('formBuscador')
+        const id = document.getElementById('idnave')
+        const mensaje = document.getElementById('mensaje')
+        const nombre = document.getElementById('nombre')
+        const modelo = document.getElementById('modelo')
+        const fabricante = document.getElementById('fabricante')
+        const clase = document.getElementById('clase')
+        const tripulacion = document.getElementById('tripulacion')
+
+        formulario.addEventListener('submit', (event) => {
+            event.preventDefault()
+
+            obtenerNave(id.value)
+        })
+
+        function limpiar() {
+            mensaje.innerHTML = ''
+            nombre.value = ''
+            modelo.value = ''
+            fabricante.value = ''
+            clase.value = ''
+            tripulacion.value = ''
+        }
+        async function obtenerNave(codigo) {
+            const API_URL = `https://swapi.dev/api/starships/${codigo}/`
+            limpiar()
+            try {
+                const respuesta = await fetch(API_URL)
+
+                if (!respuesta.ok) {
+
+                    if (respuesta.status == 404) {
+                        mensaje.innerHTML = 'No existe una Nave con el ID ' + codigo
+                        return
+                    }
+                    throw new Error('Error de comunicación')
+
+                }
+
+                const datos = await respuesta.json()
+
+                nombre.value = datos.name
+                modelo.value = datos.model
+                fabricante.value = datos.manufacturer
+                clase.value = datos.starship_class
+                tripulacion.value = datos.crew
+
+            } catch (e) {
+                mensaje.innerHTML = 'No se pudo conectar con el servidor'
+                console.error(e)
+            }
+
+        }
+    </script>
+</body>
+
+</html>

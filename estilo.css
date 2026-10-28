@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: radial-gradient(circle at top, #1e1b4b, #0b0b1e 70%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 15px;
+    color: #e5e7eb;
+}
+
+.caja {
+    background: #12122b;
+    width: 100%;
+    max-width: 520px;
+    border: 1px solid #6d28d9;
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.45);
+    overflow: hidden;
+    height: fit-content;
+}
+
+.info {
+    background: linear-gradient(90deg, #4c1d95, #2563eb);
+    color: #ffffff;
+    padding: 22px 25px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+form {
+    padding: 25px;
+}
+
+.buscar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.buscar input {
+    flex: 1;
+}
+
+.campo {
+    margin-bottom: 14px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #a78bfa;
+}
+
+input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    background: #0b0b1e;
+    color: #ffffff;
+    border: 1px solid #4c1d95;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+}
+
+button {
+    padding: 10px 22px;
+    background: linear-gradient(90deg, #7c3aed, #2563eb);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.85;
+    box-shadow: 0 0 12px rgba(124, 58, 237, 0.8);
+}
+
+#mensaje {
+    min-height: 20px;
+    margin: 0 0 12px;
+    color: #f87171;
+    font-weight: bold;
+    text-align: center;
+}
