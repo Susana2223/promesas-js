@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon</title>
+    <link rel="stylesheet" href="estilo4.css">
+
+</head>
+
+<body>
+    <main class="caja">
+        <header class="info">Buscador de Pokémon</header>
+        <form action="" id="formBuscador" autocomplete="off">
+            <div class="buscar">
+                <input type="number" id="idpokemon" placeholder="Ejem. 22" min="1" required>
+                <button type="submit">Buscar</button>
+            </div>
+            <p id="mensaje"></p>
+
+            <div class="campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre">
+            </div>
+            <div class="campo">
+                <label for="tipo">Tipo</label>
+                <input type="text" id="tipo">
+            </div>
+            <div class="campo">
+                <label for="altura">Altura</label>
+                <input type="text" id="altura">
+            </div>
+            <div class="campo">
+                <label for="peso">Peso</label>
+                <input type="text" id="peso">
+            </div>
+
+            <div class="imagen" id="imagen"></div>
+        </form>
+    </main>
+
+    <script>
+        ///javascript
+        const formulario = document.getElementById('formBuscador')
+        const id = document.getElementById('idpokemon')
+        const mensaje = document.getElementById('mensaje')
+        const nombre = document.getElementById('nombre')
+        const tipo = document.getElementById('tipo')
+        const altura = document.getElementById('altura')
+        const peso = document.getElementById('peso')
+        const imagen = document.getElementById('imagen')
+
+        formulario.addEventListener('submit', (event) => {
+            event.preventDefault()
+
+            obtenerPokemon(id.value)
+        })
+
+        function limpiar() {
+            mensaje.innerHTML = ''
+            nombre.value = ''
+            tipo.value = ''
+            altura.value = ''
+            peso.value = ''
+            imagen.innerHTML = ''
+
+        }
+        async function obtenerPokemon(codigo) {
+            const API_URL = `https://pokeapi.co/api/v2/pokemon/${codigo}/`
+            limpiar()
+            try {
+                const respuesta = await fetch(API_URL)
+
+                if (!respuesta.ok) {
+
+                    if (respuesta.status == 404) {
+                        mensaje.innerHTML = 'No existe un pokémon con el ID ' + codigo
+                        return
+                    }
+                    throw new Error('Error de comunicación')
+
+                }
+
+                const datos = await respuesta.json()
+
+                nombre.value = datos.name
+                tipo.value = datos.types[0].type.name
+                altura.value = datos.height
+                peso.value = datos.weight
+                imagen.innerHTML = `<img src="${datos.sprites.front_default}" alt="${datos.name}">`
+
+
+            } catch (e) {
+                mensaje.innerHTML = 'No se pudo conectar con el servidor'
+                console.error(e)
+            }
+
+        }
+    </script>
+</body>
+
+</html>

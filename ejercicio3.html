@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Ball API</title>
+    <link rel="stylesheet" href="estilo3.css">
+
+</head>
+
+<body>
+    <main class="caja">
+        <header class="info">Buscador de Personajes de Dragon Ball</header>
+        <form action="" id="formBuscador" autocomplete="off">
+            <div class="buscar">
+                <input type="number" id="idpersonaje" placeholder="Ejem. 1" min="1" required>
+                <button type="submit">Buscar</button>
+            </div>
+            <p id="mensaje"></p>
+
+            <div class="campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre">
+            </div>
+            <div class="campo">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" rows="6"></textarea>
+            </div>
+            <div class="imagen" id="imagen"></div>
+        </form>
+    </main>
+
+    <script>
+        ///javascript
+        const formulario = document.getElementById('formBuscador')
+        const id = document.getElementById('idpersonaje')
+        const mensaje = document.getElementById('mensaje')
+        const nombre = document.getElementById('nombre')
+        const descripcion = document.getElementById('descripcion')
+        const imagen = document.getElementById('imagen')
+
+        formulario.addEventListener('submit', (event) => {
+            event.preventDefault()
+
+            obtenerPersonaje(id.value)
+        })
+
+        function limpiar() {
+            mensaje.innerHTML = ''
+            nombre.value = ''
+            descripcion.value = ''
+            imagen.innerHTML = ''
+
+        }
+        async function obtenerPersonaje(codigo) {
+            const API_URL = `https://dragonball-api.com/api/characters/${codigo}/`
+            limpiar()
+            try {
+                const respuesta = await fetch(API_URL)
+
+                if (!respuesta.ok) {
+
+                    if (respuesta.status == 404) {
+                        mensaje.innerHTML = 'No existe un personaje con el ID ' + codigo
+                        return
+                    }
+                    throw new Error('Error de comunicación')
+
+                }
+
+                const datos = await respuesta.json()
+
+                nombre.value = datos.name
+                descripcion.value = datos.description
+                imagen.innerHTML = `<img src="${datos.image}" alt="${datos.name}">`
+
+
+            } catch (e) {
+                mensaje.innerHTML = 'No se pudo conectar con el servidor'
+                console.error(e)
+            }
+
+        }
+    </script>
+</body>
+
+</html>
